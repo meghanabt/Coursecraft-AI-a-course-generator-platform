@@ -10,10 +10,29 @@ import { Separator } from '@radix-ui/react-dropdown-menu';
 import { Button } from './ui/button';
 import { Plus, Trash } from 'lucide-react';
 import {motion, AnimatePresence} from 'framer-motion';
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useToast } from "./ui/use-toast";
+import { useRouter } from "next/navigation";
+
+
 type Props={}
 type Input= z.infer<typeof CreateChapterSchema>
 
 const CreateCourseForm = (props:Props)=>{
+
+  const { toast } = useToast();
+  const router = useRouter();
+  const { mutate: createChapters, isLoading} = useMutation({
+    mutationFn: async ({ title, units }: Input) => {
+      const response = await axios.post("/api/course/createChapters", {
+        title,
+        units,
+      });
+      return response.data;
+    },
+  });
+
     const form= useForm<Input>({
         resolver: zodResolver(CreateChapterSchema),
         defaultValues:{
@@ -22,10 +41,34 @@ const CreateCourseForm = (props:Props)=>{
         }
     })
     function onSubmit(data:Input){
-        console.log(data)
+      console.log("data",data)
+      if (data.units.some((unit) => unit === "")) {
+        toast({
+          title: "Error",
+          description: "Please fill all the units",
+          variant: "destructive",
+        });
+        return;
+      }
+      createChapters(data, {
+        onSuccess: ({ course_id }) => {
+          toast({
+            title: "Success",
+            description: "Course created successfully",
+          });
+          router.push(`/create/${course_id}`);
+        },
+        onError: (error) => {
+          console.error(error);
+          toast({
+            title: "Error",
+            description: "Something went wrong",
+            variant: "destructive",
+          });
+        },
+      });
     }
     form.watch();
-    console.log(form.watch())
     return(
         <div className="w-full mt-8">
             <Form{...form}>
@@ -115,7 +158,11 @@ const CreateCourseForm = (props:Props)=>{
             </div>
             <Separator className="flex-[1]" />
           </div>
-          <Button type="submit" className="w-full mt-6" size="lg">Create Course</Button>
+          <Button               
+          disabled={isLoading}
+            type="submit"
+            className="w-full mt-6"
+            size="lg">Create Course</Button>
                 </form>
             </Form>
         </div>

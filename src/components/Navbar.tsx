@@ -30,10 +30,10 @@ const Navbar= async(props:Props)=>{
           </>)}
           <ModeToggle className="mr-3"/>
           <div className='flex items-center'>
-            {session?.user ? <p><UserAccountNav/></p>:<SignInButton/>}
+            {session?.user ? <p><UserAccountNav user={session.user}/></p>:<SignInButton/>}
           </div>
 
-        <SignInButton/>
+
 
         </div>
         </div>
