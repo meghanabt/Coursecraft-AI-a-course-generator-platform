@@ -1,7 +1,8 @@
-import { Chapter, Course, Unit } from "@prisma/client";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { Chapter, Course, Unit } from "@prisma/client";
+
 
 type Props = {
   course: Course & {
@@ -17,15 +18,15 @@ const GalleryCourseCard = async ({ course }: Props) => {
       <div className="border rounded-lg border-secondary">
         <div className="relative">
           <Link
-            href={`/course/${course.id}/0/0`}
-            className="relative block w-fit"
+          className="relative block w-fit"
+          href={`/course/${course.id}/0/0`}
           >
             <Image
-              src={course.image || ""}
-              className="object-cover w-full max-h-[300px] rounded-t-lg"
-              width={300}
-              height={300}
-              alt="picture of the course"
+            className="object-cover w-full max-h-[300px] rounded-t-lg"
+            width={300}
+            height={300}
+            src={course.image || ""}
+            alt="Course Picture"
             />
             <span className="absolute px-2 py-1 text-white rounded-md bg-black/60 w-fit bottom-2 left-2 right-2">
               {course.name}
@@ -39,9 +40,9 @@ const GalleryCourseCard = async ({ course }: Props) => {
             {course.units.map((unit, unitIndex) => {
               return (
                 <Link
-                  href={`/course/${course.id}/${unitIndex}/0`}
+                className="block underline w-fit"
+                href={`/course/${course.id}/${unitIndex}/0`}
                   key={unit.id}
-                  className="block underline w-fit"
                 >
                   {unit.name}
                 </Link>

@@ -1,12 +1,13 @@
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Lexend } from "next/font/google";
-import Navbar from "@/components/Navbar";
+import { Open_Sans  } from "next/font/google";
 import { Provider } from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
+import Navbar from "@/components/Navbar";
 
-const lexend = Lexend({ subsets: ["latin"] });
+
+const lexend = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "CourseCraft-AI",

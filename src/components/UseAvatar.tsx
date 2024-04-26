@@ -1,31 +1,31 @@
 import React from "react";
-import { Avatar, AvatarFallback } from "./ui/avatar";
 import { User } from "next-auth";
 import Image from "next/image";
+import { Icon, IconFallback } from "./ui/avatar";
 
 type Props = {
   user: User;
 };
 
-const UserAvatar = ({ user }: Props) => {
+const UserIcon = ({ user }: Props) => {
   return (
-    <Avatar>
+    <Icon>
       {user.image ? (
         <div className="relative w-ful h-full aspect-square">
           <Image
             fill
             src={user.image}
-            alt="user profile"
             referrerPolicy="no-referrer"
+            alt="User Credentials"
           />
         </div>
       ) : (
-        <AvatarFallback>
+        <IconFallback>
           <span className="sr-only">{user?.name}</span>
-        </AvatarFallback>
+        </IconFallback>
       )}
-    </Avatar>
+    </Icon>
   );
 };
 
-export default UserAvatar;
+export default UserIcon;

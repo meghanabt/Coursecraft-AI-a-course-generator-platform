@@ -4,7 +4,7 @@ import React from "react";
 import ChapterCard, { ChapterCardHandler } from "./ChapterCard";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
-import { Button, buttonVariants } from "./ui/button";
+import { Button, buttonStyle } from "./ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 
@@ -17,28 +17,31 @@ type Props = {
 };
 
 const ConfirmChapters = ({ course }: Props) => {
+  
   const [loading, setLoading] = React.useState(false);
-  const chapterRefs: Record<string, React.RefObject<ChapterCardHandler>> = {};
-  course.units.forEach((unit) => {
-    unit.chapters.forEach((chapter) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      chapterRefs[chapter.id] = React.useRef(null);
-    });
-  });
-  const [completedChapters, setCompletedChapters] = React.useState<Set<String>>(
-    new Set()
-  );
-  const totalChaptersCount = React.useMemo(() => {
+  const [chaptersCompleted, setchaptersCompleted] = React.useState<Set<String>>(new Set());
+
+  const chaptersCount = React.useMemo(() => {
     return course.units.reduce((acc, unit) => {
       return acc + unit.chapters.length;
     }, 0);
   }, [course.units]);
-  console.log("totalChaptersCount, completedChapters.size",totalChaptersCount, completedChapters.size);
+
+  const chapterRefs: Record<string, React.RefObject<ChapterCardHandler>> = {};
+
+  course.units.forEach((unit) => {
+    unit.chapters.forEach((chapter) => {
+      chapterRefs[chapter.id] = React.useRef(null);
+    });
+  });
+
+
+
   return (
     <div className="w-full mt-4">
       {course.units.map((unit, unitIndex) => {
         return (
-          <div key={unit.id} className="mt-5">
+          <div className="mt-5" key={unit.id} >
             <h2 className="text-sm uppercase text-secondary-foreground/60">
               Unit {unitIndex + 1}
             </h2>
@@ -47,8 +50,8 @@ const ConfirmChapters = ({ course }: Props) => {
               {unit.chapters.map((chapter, chapterIndex) => {
                 return (
                   <ChapterCard
-                    completedChapters={completedChapters}
-                    setCompletedChapters={setCompletedChapters}
+                    completedChapters={chaptersCompleted}
+                    setCompletedChapters={setchaptersCompleted}
                     ref={chapterRefs[chapter.id]}
                     key={chapter.id}
                     chapter={chapter}
@@ -64,17 +67,17 @@ const ConfirmChapters = ({ course }: Props) => {
         <Separator className="flex-[1]" />
         <div className="flex items-center mx-4">
           <Link
+          className={buttonStyle({
+            variant: "secondary",
+          })}
             href="/create"
-            className={buttonVariants({
-              variant: "secondary",
-            })}
           >
             <ChevronLeft className="w-4 h-4 mr-2" strokeWidth={4} />
             Back
           </Link>
-          {totalChaptersCount === completedChapters.size ? (
+          {chaptersCount === chaptersCompleted.size ? (
             <Link
-              className={buttonVariants({
+              className={buttonStyle({
                 className: "ml-4 font-semibold",
               })}
               href={`/course/${course.id}/0/0`}
@@ -85,8 +88,8 @@ const ConfirmChapters = ({ course }: Props) => {
           ) : (
             <Button
               type="button"
-              className="ml-4 font-semibold"
               disabled={loading}
+              className="ml-4 font-semibold"
               onClick={() => {
                 setLoading(true);
                 Object.values(chapterRefs).forEach((ref) => {

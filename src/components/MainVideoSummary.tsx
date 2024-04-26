@@ -21,10 +21,10 @@ const MainVideoSummary = ({
       </h4>
       <h1 className="text-4xl font-bold">{chapter.name}</h1>
       <iframe
-        title="chapter video"
-        className="w-full mt-4 aspeect-video max-h-[24rem]"
-        src={`https://www.youtube.com/embed/${chapter.videoId}`}
-        allowFullScreen
+      title="chapter video"
+      className="w-full mt-4 aspeect-video max-h-[24rem]"
+      src={`https://www.youtube.com/embed/${chapter.videoId}`}
+      allowFullScreen
       />
       <div className="mt-4">
         <h3 className="text-3xl font-semibold">Summary</h3>

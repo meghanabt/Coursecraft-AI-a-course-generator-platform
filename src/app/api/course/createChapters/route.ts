@@ -12,13 +12,16 @@ import { checkSubscription } from "@/lib/subscription";
 export async function POST(req: Request, res: Response) {
   try {
     const session = await getAuthSession();
+
     if (!session?.user) {
       return new NextResponse("unauthorised", { status: 401 });
     }
+
     const isPro = await checkSubscription();
     if (session.user.credits <= 0 && !isPro) {
       return new NextResponse("no credits", { status: 402 });
     }
+    
     const body = await req.json();
     const { title, units } = createChaptersSchema.parse(body);
 
@@ -30,10 +33,10 @@ export async function POST(req: Request, res: Response) {
       }[];
     }[];
 
-    let output_units: outputUnits = await strict_output(
+    let generatedUnits: outputUnits = await strict_output(
       "You are an AI capable of curating course content, coming up with relevant chapter titles, and finding relevant youtube videos for each chapter",
       new Array(units.length).fill(
-        `It is your job to create a course about ${title}. The user has requested to create chapters for each of the units. Then, for each chapter, provide a detailed youtube search query that can be used to find an informative educationalvideo for each chapter. Each query should give an educational informative course in youtube.`
+        `It is your job to create a course about "${title}". The user has requested to create chapters for each of the units. Then, for each chapter, provide a detailed youtube search query that can be used to find an informative educationalvideo for each chapter. Each query should give an educational informative course in youtube.`
       ),
       {
         title: "title of the unit",
@@ -41,6 +44,8 @@ export async function POST(req: Request, res: Response) {
           "an array of chapters, each chapter should have a youtube_search_query and a chapter_title key in the JSON object",
       }
     );
+
+    console.log("generatetdUnits", generatedUnits)
 
     const imageSearchTerm = await strict_output(
       "you are an AI capable of finding the most relevant image for a course",
@@ -53,6 +58,7 @@ export async function POST(req: Request, res: Response) {
     const course_image = await getUnsplashImage(
       imageSearchTerm.image_search_term
     );
+
     const course = await prisma.course.create({
       data: {
         name: title,
@@ -60,7 +66,7 @@ export async function POST(req: Request, res: Response) {
       },
     });
 
-    for (const unit of output_units) {
+    for (const unit of generatedUnits) {
       const title = unit.title;
       const prismaUnit = await prisma.unit.create({
         data: {
@@ -78,6 +84,7 @@ export async function POST(req: Request, res: Response) {
         }),
       });
     }
+
     await prisma.user.update({
       where: {
         id: session.user.id,
@@ -90,6 +97,7 @@ export async function POST(req: Request, res: Response) {
     });
 
     return NextResponse.json({ course_id: course.id });
+
   } catch (error) {
     if (error instanceof ZodError) {
       return new NextResponse("invalid body", { status: 400 });

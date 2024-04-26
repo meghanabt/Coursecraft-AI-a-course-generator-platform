@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
-import { Button } from "./ui/button";
 import axios from "axios";
+import { Button } from "./ui/button";
+
 
 type Props = { isPro: boolean };
 
-const SubscriptionButton = ({ isPro }: Props) => {
+const Subscription = ({ isPro }: Props) => {
   const [loading, setLoading] = React.useState(false);
-  const handleSubscribe = async () => {
+  const handleSubscription = async () => {
     setLoading(true);
     try {
       const response = await axios.get("/api/stripe");
@@ -19,10 +20,10 @@ const SubscriptionButton = ({ isPro }: Props) => {
     }
   };
   return (
-    <Button className="mt-4" disabled={loading} onClick={handleSubscribe}>
+    <Button className="mt-4" onClick={handleSubscription}  disabled={loading} >
       {isPro ? "Manage Subscriptions" : "Upgrade"}
     </Button>
   );
 };
 
-export default SubscriptionButton;
+export default Subscription;

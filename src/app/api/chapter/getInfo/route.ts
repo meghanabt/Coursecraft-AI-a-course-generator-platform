@@ -2,13 +2,14 @@
 
 import { prisma } from "@/lib/db";
 import { strict_output } from "@/lib/gpt";
-import {
-  getQuestionsFromTranscript,
-  getTranscript,
-  searchYoutube,
-} from "@/lib/youtube";
-import { NextResponse } from "next/server";
 import { z } from "zod";
+import { NextResponse } from "next/server";
+import {
+  fetchQuestionsFromTranscript,
+  getTranscript,
+  queryYoutube,
+} from "@/lib/youtube";
+
 
 const bodyParser = z.object({
   chapterId: z.string(),
@@ -32,19 +33,19 @@ export async function POST(req: Request, res: Response) {
         { status: 404 }
       );
     }
-    const videoId = await searchYoutube(chapter.youtubeSearchQuery);
+    const videoId = await queryYoutube(chapter.youtubeSearchQuery);
     let transcript = await getTranscript(videoId);
     let maxLength = 500;
     transcript = transcript.split(" ").slice(0, maxLength).join(" ");
 
     const { summary }: { summary: string } = await strict_output(
       "You are an AI capable of summarising a youtube transcript",
-      "summarise in 250 words or less and do not talk of the sponsors or anything unrelated to the main topic, also do not introduce what the summary is about.\n" +
+      "summarise in 650 words in 2 paragraphs or less and do not talk of the sponsors or anything unrelated to the main topic, also do not introduce what the summary is about.If there is no transcript found provide the output, you analyze the topic and generate the summary \n" +
         transcript,
       { summary: "summary of the transcript" }
     );
 
-    const questions = await getQuestionsFromTranscript(
+    const questions = await fetchQuestionsFromTranscript(
       transcript,
       chapter.name
     );
@@ -76,7 +77,8 @@ export async function POST(req: Request, res: Response) {
     });
 
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } 
+  catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {

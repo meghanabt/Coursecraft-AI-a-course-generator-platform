@@ -8,6 +8,7 @@ const settingsUrl = process.env.NEXTAUTH_URL + "/settings";
 export async function GET() {
   try {
     const session = await getAuthSession();
+
     if (!session?.user) {
       return new NextResponse("unauthorised", { status: 401 });
     }
@@ -18,7 +19,7 @@ export async function GET() {
       },
     });
 
-    // cancel at the billing portal
+    
     if (userSubscription && userSubscription.stripeCustomerId) {
       const stripeSession = await stripe.billingPortal.sessions.create({
         customer: userSubscription.stripeCustomerId,
@@ -27,7 +28,6 @@ export async function GET() {
       return NextResponse.json({ url: stripeSession.url });
     }
 
-    // user's first time subscribing
     const stripeSession = await stripe.checkout.sessions.create({
       success_url: settingsUrl,
       cancel_url: settingsUrl,
@@ -41,9 +41,9 @@ export async function GET() {
             currency: "USD",
             product_data: {
               name: "Course-Craft AI",
-              description: "unlimited course generation!",
+              description: "Unlimited Course Generation",
             },
-            unit_amount: 2000,
+            unit_amount: 999,
             recurring: {
               interval: "month",
             },
@@ -56,8 +56,9 @@ export async function GET() {
       },
     });
     return NextResponse.json({ url: stripeSession.url });
+
   } catch (error) {
     console.log("[STRIPE ERROR]", error);
-    return new NextResponse("internal server error", { status: 500 });
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

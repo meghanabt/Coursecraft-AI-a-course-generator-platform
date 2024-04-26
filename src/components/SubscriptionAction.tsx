@@ -1,17 +1,18 @@
 "use client";
-import { useSession } from "next-auth/react";
 import React from "react";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import { Progress } from "./ui/progress";
 import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
-import axios from "axios";
 
 type Props = {};
 
 const SubscriptionAction = (props: Props) => {
   const { data } = useSession();
   const [loading, setLoading] = React.useState(false);
-  const handleSubscribe = async () => {
+
+  const handleSubscription = async () => {
     setLoading(true);
     try {
       const response = await axios.get("/api/stripe");
@@ -30,9 +31,9 @@ const SubscriptionAction = (props: Props) => {
         value={data?.user.credits ? (data.user.credits / 10) * 100 : 0}
       />
       <Button
-        disabled={loading}
-        onClick={handleSubscribe}
-        className="mt-3 font-bold text-white transition bg-gradient-to-tr from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600"
+      className="mt-3 font-bold text-white transition bg-gradient-to-tr from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600"
+      onClick={handleSubscription}
+      disabled={loading}
       >
         Upgrade
         <Zap className="fill-white ml-2" />

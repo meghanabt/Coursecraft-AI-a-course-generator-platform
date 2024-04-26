@@ -6,7 +6,7 @@ import { User } from "next-auth"
 import { DropdownMenuItem } from './ui/dropdown-menu';
 import { LogOut } from 'lucide-react';
 import { signOut } from 'next-auth/react';
-import UserAvatar from './UseAvatar';
+import UserIcon from './UseAvatar';
 
 type Props ={
     user: User
@@ -17,7 +17,7 @@ const UserAccountNav=({user}:Props)=>
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <UserAvatar user={user}/>
+                <UserIcon user={user}/>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <div className="flex items-center justify-start gap-2 p-2">
