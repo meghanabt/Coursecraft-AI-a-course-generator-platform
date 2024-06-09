@@ -27,17 +27,9 @@ In conclusion, the AI-based course generator represents a significant step forwa
 
 ### Generative AI
 - **OpenAI**: Utilized for generating personalized content based on user data and preferences.
-  
-### Microservices Architecture
-- **Docker**: Containerizes the application to ensure consistent and scalable deployment.
-- **Kubernetes**: Manages containerized applications for high availability and scalability.
 
-### Frontend
+### Framework
 - **Next.js**: Provides a robust and scalable framework for server-side rendering and static site generation.
-  
-### Backend
-- **Node.js**: Powers the server-side application logic and handles API requests.
-- **Express.js**: Facilitates efficient routing and middleware handling for the Node.js application.
 
 ### Database
 - **MongoDB**: Stores user data, course information, and preferences in a flexible, schema-less format.
@@ -53,10 +45,6 @@ In conclusion, the AI-based course generator represents a significant step forwa
 
 ### Deployment
 - **AWS**: Provides a reliable and scalable cloud infrastructure for hosting the application.
-  
-## Table of Figures
-
-<!-- Space for adding the Table of Figures -->
 
 ## Installation
 
