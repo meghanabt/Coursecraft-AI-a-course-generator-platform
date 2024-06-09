@@ -28,27 +28,6 @@ In the rapidly evolving sector of education, there is an increasing need for eff
 - Neglect of soft skills
 - Underrepresentation of diverse perspectives in the curriculum
 
-## Working of the Application
-
-### User Journey
-
-1. **Login/Registration**: Users log in with valid credentials or create a new account with necessary information like login, password, and email verification.
-   
-   ![Login Screen](screenshots/login.png)
-
-2. **Dashboard**: After logging in, users are taken to a personalized dashboard where they can view existing courses or create new ones.
-   
-   ![Dashboard](screenshots/dashboard.png)
-
-3. **Course Creation**: Users specify the course title and units, then confirm the input before the system generates chapters and content.
-   
-   ![Course Creation](screenshots/course_creation.png)
-
-4. **Content Generation**: The application creates chapters, videos, MCQs, and summaries using generative AI and YouTube API.
-   
-   ![Content Generation](screenshots/content_generation.png)
-
-5. **Authentication & Payment**: Secure login is handled by Next.js, and subscriptions/payments are managed through the Stripe API.
 
 ### Features
 
