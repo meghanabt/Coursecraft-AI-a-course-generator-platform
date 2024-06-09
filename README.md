@@ -10,23 +10,6 @@ The project presents a thorough architecture and design that tackles these issue
 
 In conclusion, the AI-based course generator represents a significant step forward in personalized education. The platform holds the potential to revolutionize the creation and consumption of educational content by including ethical considerations, user feedback, and a continuous improvement mindset. The initiative has the potential to significantly influence the development of a more dynamic, inclusive, and successful educational system if it is dedicated to resolving its limits and concentrating on its next steps.
 
-## Introduction
-
-In the rapidly evolving sector of education, there is an increasing need for efficient, effective, and personalized learning experiences that take individual preferences into account. When traditional educational methodologies are used, there is a widening gap between the substance of instruction and the participation of the students. In order to solve these difficulties, this project introduces a state-of-the-art AI-based course generator with the intention of changing the production, distribution, and consumption of educational content.
-
-## Criticisms of the Current Educational System
-
-- One-size-fits-all policies that prioritize rote memorization over critical thinking
-- Lack of flexibility and customization
-- Lack of real-world application of knowledge
-- Teacher-centric model that impedes student engagement
-- Inadequate technology integration
-- Assessment-centric culture that prioritizes grades over holistic development
-- Lack of preparation for the rapidly evolving labor market
-- Neglect of soft skills
-- Underrepresentation of diverse perspectives in the curriculum
-
-
 ### Features
 
 - **Generative AI**: Creates personalized content tailored to user preferences and learning styles.
