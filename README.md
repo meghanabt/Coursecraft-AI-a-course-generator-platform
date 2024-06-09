@@ -1,4 +1,4 @@
-# AI-Based Course Generator
+# CourseCraft AI: AI-Based Course Generator
 
 ## Abstract
 
